@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Link } from "react-router-dom";
 import Button from "./Button";
 import { useState } from "react";
 
@@ -19,7 +20,7 @@ function Card({ children, noteId, title, isArchived, createdAt, deleteNote, chan
       <small className="my-2 block text-gray-500/70 text-xs">
         {createdAt}
       </small>
-      <div className="text-sm mb-24">
+      <div className="text-sm mb-40">
         {children}
       </div>
 
@@ -37,22 +38,28 @@ function Card({ children, noteId, title, isArchived, createdAt, deleteNote, chan
           <div className="w-6 aspect-square bg-cust-yellow rounded-full border border-cust-black hover:cursor-pointer" onClick={() => { changeColor('#FDF2B3') }}>
           </div>
         </div>
-        <div className="flex gap-4">
+        <Link to={'/detail'} className="block w-full mt-5">
+          <Button isPrimary textSize='12px' padding="4px">
+            Detail 👉
+          </Button>
+        </Link>
+        <div className="flex gap-3 mt-3">
           <Button textSize='12px' padding="4px" onClick={() => { deleteNote(noteId) }}>
             Hapus 🗑️
           </Button>
 
           {isArchived ?
-            <Button isPrimary textSize='12px' padding="4px" onClick={() => { changeArchived(noteId) }}>
+            <Button textSize='12px' padding="4px" onClick={() => { changeArchived(noteId) }}>
               Pindahkan 🚀
             </Button> :
-            <Button isPrimary textSize='12px' padding="4px" onClick={() => { changeArchived(noteId) }}>
+            <Button textSize='12px' padding="4px" onClick={() => { changeArchived(noteId) }}>
               Arsipkan 📂
             </Button>
           }
         </div>
       </div>
     </div>
+
   )
 }
 
