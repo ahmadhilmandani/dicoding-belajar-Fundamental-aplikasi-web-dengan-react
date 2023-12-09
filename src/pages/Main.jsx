@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import Navigation from '../components/Navigation'
-import Button from '../components/Button'
+import TextButton from '../components/TextButton'
 import Card from '../components/Card'
 import moment from "moment"
 
@@ -79,12 +78,10 @@ export default function MainLayout() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-cust-white p-6 relative">
-      <Navigation />
+    <div className="relative">
       <main className='mt-12'>
         <section className='max-w-md mx-auto'>
           <h1 className='mb-6'>Buat Catatan</h1>
-
           <label className='mb-2 text-xs flex justify-between'>
             <div>
               <sup className='text-red-500 text-base'>*</sup>Judul harus diisi
@@ -104,7 +101,7 @@ export default function MainLayout() {
           }} name="" id="" cols="30" rows="10" value={body} className="outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm w-full border focus:outline-1 outline-cust-blue focus:border-cust-blue mt-4 mb-4" placeholder='tulis deksripsi catatan... 📝'>
           </textarea>
 
-          <Button isPrimary onClick={() => {
+          <TextButton isPrimary onClick={() => {
             if (!title) {
               return
             }
@@ -120,9 +117,11 @@ export default function MainLayout() {
                 }
               ]
             )
+            setTitle('')
+            setBody('')
           }}>
             Tambah 🫰
-          </Button>
+          </TextButton>
         </section>
         <section className='mt-10'>
           <div>

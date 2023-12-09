@@ -1,9 +1,9 @@
-/* eslint-disable react/prop-types */
-import { Link } from "react-router-dom";
-import Button from "./Button";
+import CustLink from "./CustLink";
+import IconButton from "./IconButton";
+import PropsTypes from 'prop-types'
 import { useState } from "react";
 
-function Card({ children, noteId, title, isArchived, createdAt, deleteNote, changeArchived }) {
+export default function Card({ children, noteId, title, isArchived, createdAt, deleteNote, changeArchived }) {
   const [color, setColor] = useState('#D1EAED')
 
   function changeColor(paramColor) {
@@ -20,10 +20,9 @@ function Card({ children, noteId, title, isArchived, createdAt, deleteNote, chan
       <small className="my-2 block text-gray-500/70 text-xs">
         {createdAt}
       </small>
-      <div className="text-sm mb-40">
+      <div className="text-sm mb-48">
         {children}
       </div>
-
       <div className="absolute bottom-8 left-8 right-8">
         <div className="flex gap-2 items-center text-xs mb-4">
           <div>
@@ -38,29 +37,49 @@ function Card({ children, noteId, title, isArchived, createdAt, deleteNote, chan
           <div className="w-6 aspect-square bg-cust-yellow rounded-full border border-cust-black hover:cursor-pointer" onClick={() => { changeColor('#FDF2B3') }}>
           </div>
         </div>
-        <Link to={'/detail'} className="block w-full mt-5">
-          <Button isPrimary textSize='12px' padding="4px">
-            Detail 👉
-          </Button>
-        </Link>
-        <div className="flex gap-3 mt-3">
-          <Button textSize='12px' padding="4px" onClick={() => { deleteNote(noteId) }}>
-            Hapus 🗑️
-          </Button>
-
+        <CustLink href="/detail">
+          Detail 👉
+        </CustLink>
+        <div className="flex gap-3 mt-3 items-center h-12">
+          <IconButton onClick={() => { deleteNote(noteId) }}>
+            <button>
+              🗑️
+            </button>
+            <div>
+              Hapus
+            </div>
+          </IconButton>
           {isArchived ?
-            <Button textSize='12px' padding="4px" onClick={() => { changeArchived(noteId) }}>
-              Pindahkan 🚀
-            </Button> :
-            <Button textSize='12px' padding="4px" onClick={() => { changeArchived(noteId) }}>
-              Arsipkan 📂
-            </Button>
+            <IconButton onClick={() => { changeArchived(noteId) }}>
+              <button>
+                🚀
+              </button>
+              <div>
+                Pindahkan
+              </div>
+            </IconButton>
+            :
+            <IconButton onClick={() => { changeArchived(noteId) }}>
+              <button>
+                📂
+              </button>
+              <div>
+                Arsipkan
+              </div>
+            </IconButton>
           }
         </div>
       </div>
     </div>
-
   )
 }
 
-export default Card
+Card.propTypes = {
+  children: PropsTypes.string,
+  noteId: PropsTypes.string,
+  title: PropsTypes.string,
+  isArchived: PropsTypes.bool,
+  createdAt: PropsTypes.string,
+  deleteNote: PropsTypes.func,
+  changeArchived: PropsTypes.func,
+}
