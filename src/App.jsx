@@ -9,6 +9,7 @@ import Main from './pages/Main'
 import Detail from './pages/Detail'
 import { useState } from 'react'
 import PropsTypes from 'prop-types'
+import NotFound from './pages/NotFound'
 
 function TestingElement({ isIndex }) {
   const [notes, setNote] = useState(
@@ -110,6 +111,7 @@ const router = createBrowserRouter(
     <Route path='/' element={<MainLayout />}>
       <Route index element={<TestingElement isIndex />} />
       <Route path='/detail/:id' element={<TestingElement />} />
+      <Route path='*' element={<NotFound />}/>
     </Route>
   )
 )
