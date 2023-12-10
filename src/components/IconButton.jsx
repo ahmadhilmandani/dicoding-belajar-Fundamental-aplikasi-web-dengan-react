@@ -9,6 +9,6 @@ export default function IconButton({ children, onClick }) {
 }
 
 IconButton.propTypes = {
-  children: PropsTypes.string.isRequired,
-  onClick: PropsTypes.string.isRequired,
+  children: PropsTypes.element.isRequired,
+  onClick: PropsTypes.func.isRequired,
 }

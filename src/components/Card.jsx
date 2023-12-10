@@ -20,7 +20,7 @@ export default function Card({ children, noteId, title, isArchived, createdAt, d
       <small className="my-2 block text-gray-500/70 text-xs">
         {createdAt}
       </small>
-      <div className="text-sm mb-48">
+      <div className="text-sm mb-48 line-clamp-3">
         {children}
       </div>
       <div className="absolute bottom-8 left-8 right-8">
@@ -37,35 +37,41 @@ export default function Card({ children, noteId, title, isArchived, createdAt, d
           <div className="w-6 aspect-square bg-cust-yellow rounded-full border border-cust-black hover:cursor-pointer" onClick={() => { changeColor('#FDF2B3') }}>
           </div>
         </div>
-        <CustLink href="/detail">
+        <CustLink href={`/detail/${noteId}`}>
           Detail 👉
         </CustLink>
         <div className="flex gap-3 mt-3 items-center h-12">
           <IconButton onClick={() => { deleteNote(noteId) }}>
+            <>
             <button>
               🗑️
             </button>
             <div>
               Hapus
-            </div>
+              </div>
+              </>
           </IconButton>
           {isArchived ?
             <IconButton onClick={() => { changeArchived(noteId) }}>
+              <>
               <button>
                 🚀
               </button>
               <div>
                 Pindahkan
               </div>
+              </>
             </IconButton>
             :
             <IconButton onClick={() => { changeArchived(noteId) }}>
+              <>
               <button>
                 📂
               </button>
               <div>
                 Arsipkan
               </div>
+              </>
             </IconButton>
           }
         </div>
@@ -76,7 +82,7 @@ export default function Card({ children, noteId, title, isArchived, createdAt, d
 
 Card.propTypes = {
   children: PropsTypes.string,
-  noteId: PropsTypes.string,
+  noteId: PropsTypes.number,
   title: PropsTypes.string,
   isArchived: PropsTypes.bool,
   createdAt: PropsTypes.string,
