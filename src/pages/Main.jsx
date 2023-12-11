@@ -1,0 +1,130 @@
+
+import { useState } from 'react'
+import TextButton from '../components/TextButton'
+import Card from '../components/Card'
+import moment from "moment"
+import PropsTypes from 'prop-types'
+
+export default function Main({notes, changeArchived, deleteNote,submitNewNote}) {
+  const [title, setTitle] = useState('')
+  const [body, setBody] = useState('')
+
+  let isActiveNoteEmpty = true
+  let isArchivedNoteEmpty = true
+
+  return (
+    <div className="relative">
+      <main className='mt-12'>
+        <section className='max-w-md mx-auto'>
+          <h1 className='mb-6'>Buat Catatan</h1>
+          <label className='mb-2 text-xs flex justify-between'>
+            <div>
+              <sup className='text-red-500 text-base'>*</sup>Judul harus diisi
+            </div>
+            <div>
+              Sisa karakter: {50 - title.length}
+            </div>
+          </label>
+          <input onChange={(e) => {
+            if (e.target.value.length <= 50) {
+              setTitle(e.target.value)
+            }
+          }} value={title} type="text" className="outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm w-full border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder="Judul catatan... ✨" />
+
+          <textarea onChange={(e) => {
+            setBody(e.target.value)
+          }} name="" id="" cols="30" rows="10" value={body} className="outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm w-full border focus:outline-1 outline-cust-blue focus:border-cust-blue mt-4 mb-4" placeholder='tulis deksripsi catatan... 📝'>
+          </textarea>
+
+          <TextButton isPrimary onClick={() => {
+            submitNewNote(title,body)
+            setTitle('')
+            setBody('')
+          }}>
+            Tambah 🫰
+          </TextButton>
+        </section>
+        <section className='mt-10'>
+          <div>
+            <h1 className='mb-4'>Catatan aktif</h1>
+            <div className='flex gap-4 flex-wrap'>
+              {
+                notes.length > 0 ?
+                  notes.map((note, index) => {
+                    if (note.archived != true) {
+                      isActiveNoteEmpty = false
+                      return (
+                        <Card
+                          noteId={note.id}
+                          changeArchived={changeArchived}
+                          title={note.title}
+                          createdAt={moment(note.createdAt).format("DD-MM-YYYY")}
+                          key={note.id}
+                          deleteNote={deleteNote}
+                        >
+                          {note.body}
+                        </Card>
+                      )
+                    }
+                    if ((++index == notes.length) && (isActiveNoteEmpty == true)) {
+                      return (
+                        <div key={index}>
+                          Masih kosong nih... 💤
+                        </div>
+                      )
+                    }
+                  }) :
+                  <div>
+                    Masih kosong nih... 💤
+                  </div>
+              }
+            </div>
+          </div>
+          <div className='mt-4'>
+            <h1 className='mb-4'>Arsip</h1>
+            <div className='flex gap-4 flex-wrap'>
+              {
+                notes.length > 0 ?
+                  notes.map((note, index) => {
+                    if (note.archived != false) {
+                      isArchivedNoteEmpty = false
+                      return (
+                        <Card
+                          noteId={note.id}
+                          changeArchived={changeArchived}
+                          title={note.title}
+                          createdAt={moment(note.createdAt).format("DD-MM-YYYY")}
+                          key={note.id}
+                          deleteNote={deleteNote}
+                          isArchived
+                        >
+                          {note.body}
+                        </Card>
+                      )
+                    }
+                    if ((++index == notes.length) && (isArchivedNoteEmpty == true)) {
+                      return (
+                        <div key={index}>
+                          Masih kosong nih... 💤
+                        </div>
+                      )
+                    }
+                  }) :
+                  <div>
+                    Masih kosong nih... 💤
+                  </div>
+              }
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  )
+}
+
+Main.propTypes = {
+  notes: PropsTypes.array.isRequired,
+  changeArchived: PropsTypes.func.isRequired,
+  deleteNote: PropsTypes.func.isRequired,
+  submitNewNote: PropsTypes.func.isRequired,
+}
