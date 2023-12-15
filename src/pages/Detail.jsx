@@ -1,18 +1,19 @@
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import PropsTypes from 'prop-types'
 import CustLink from '../components/CustLink'
 import IconButton from '../components/IconButton'
+import { notesDataContext } from '../context/notesData'
 
-export default function Detail({ notes, changeArchived, deleteNote }) {
+export default function Detail() {
   const params = useParams()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const userData = useContext(notesDataContext)
 
   const [filteredNote, setFilteredNote] = useState(null)
 
   useEffect(() => {
-    setFilteredNote(notes.find(note => note.id == params.id))
+    setFilteredNote(userData.notes.find(note => note.id == params.id))
   }, [])
 
   return (
@@ -36,10 +37,10 @@ export default function Detail({ notes, changeArchived, deleteNote }) {
             </div>
           </div>
           <div className='flex gap-2 justify-end items-center fixed bottom-8 right-8'>
-          <IconButton onClick={() => {
-            deleteNote(filteredNote.id)
-            navigate("/")
-          }}>
+            <IconButton onClick={() => {
+              userData.deleteNote(filteredNote.id)
+              navigate("/")
+            }}>
               <>
                 <button>
                   🗑️
@@ -51,10 +52,10 @@ export default function Detail({ notes, changeArchived, deleteNote }) {
             </IconButton>
 
             {filteredNote.archived ?
-            <IconButton onClick={() => {
-              changeArchived(filteredNote.id)
-              navigate("/")
-            }}>
+              <IconButton onClick={() => {
+                userData.changeArchived(filteredNote.id)
+                navigate("/")
+              }}>
                 <>
                   <button>
                     🚀
@@ -65,10 +66,10 @@ export default function Detail({ notes, changeArchived, deleteNote }) {
                 </>
               </IconButton>
               :
-            <IconButton onClick={() => {
-              changeArchived(filteredNote.id)
-              navigate("/")
-            }}>
+              <IconButton onClick={() => {
+                userData.changeArchived(filteredNote.id)
+                navigate("/")
+              }}>
                 <>
                   <button>
                     📂
@@ -84,10 +85,4 @@ export default function Detail({ notes, changeArchived, deleteNote }) {
       }
     </div>
   )
-}
-
-Detail.propTypes = {
-  notes: PropsTypes.array.isRequired,
-  changeArchived: PropsTypes.func,
-  deleteNote: PropsTypes.func,
 }

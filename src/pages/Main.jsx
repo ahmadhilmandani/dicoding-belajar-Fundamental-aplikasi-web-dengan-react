@@ -1,13 +1,16 @@
 
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import TextButton from '../components/TextButton'
 import Card from '../components/Card'
 import moment from "moment"
-import PropsTypes from 'prop-types'
+import { userDataContext } from '../context/userData'
+import { notesDataContext } from '../context/notesData'
 
-export default function Main({notes, changeArchived, deleteNote,submitNewNote}) {
+export default function Main() {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
+  const userData = useContext(userDataContext)
+  const notesData = useContext(notesDataContext)
 
   let isActiveNoteEmpty = true
   let isArchivedNoteEmpty = true
@@ -16,7 +19,8 @@ export default function Main({notes, changeArchived, deleteNote,submitNewNote}) 
     <div className="relative">
       <main className='mt-12'>
         <section className='max-w-md mx-auto'>
-          <h1 className='mb-6'>Buat Catatan</h1>
+          <small className='block mb-2 font-medium'>Hello, {userData.userName}! 👋😲</small>
+          <h1 className='mb-8'>Buat Catatan</h1>
           <label className='mb-2 text-xs flex justify-between'>
             <div>
               <sup className='text-red-500 text-base'>*</sup>Judul harus diisi
@@ -37,7 +41,7 @@ export default function Main({notes, changeArchived, deleteNote,submitNewNote}) 
           </textarea>
 
           <TextButton isPrimary onClick={() => {
-            submitNewNote(title,body)
+            notesData.submitNewNote(title, body)
             setTitle('')
             setBody('')
           }}>
@@ -49,24 +53,24 @@ export default function Main({notes, changeArchived, deleteNote,submitNewNote}) 
             <h1 className='mb-4'>Catatan aktif</h1>
             <div className='flex gap-4 flex-wrap'>
               {
-                notes.length > 0 ?
-                  notes.map((note, index) => {
+                notesData.notes.length > 0 ?
+                  notesData.notes.map((note, index) => {
                     if (note.archived != true) {
                       isActiveNoteEmpty = false
                       return (
                         <Card
                           noteId={note.id}
-                          changeArchived={changeArchived}
+                          changeArchived={notesData.changeArchived}
                           title={note.title}
                           createdAt={moment(note.createdAt).format("DD-MM-YYYY")}
                           key={note.id}
-                          deleteNote={deleteNote}
+                          deleteNote={notesData.deleteNote}
                         >
                           {note.body}
                         </Card>
                       )
                     }
-                    if ((++index == notes.length) && (isActiveNoteEmpty == true)) {
+                    if ((++index == notesData.notes.length) && (isActiveNoteEmpty == true)) {
                       return (
                         <div key={index}>
                           Masih kosong nih... 💤
@@ -84,25 +88,25 @@ export default function Main({notes, changeArchived, deleteNote,submitNewNote}) 
             <h1 className='mb-4'>Arsip</h1>
             <div className='flex gap-4 flex-wrap'>
               {
-                notes.length > 0 ?
-                  notes.map((note, index) => {
+                notesData.notes.length > 0 ?
+                  notesData.notes.map((note, index) => {
                     if (note.archived != false) {
                       isArchivedNoteEmpty = false
                       return (
                         <Card
                           noteId={note.id}
-                          changeArchived={changeArchived}
+                          changeArchived={notesData.changeArchived}
                           title={note.title}
                           createdAt={moment(note.createdAt).format("DD-MM-YYYY")}
                           key={note.id}
-                          deleteNote={deleteNote}
+                          deleteNote={notesData.deleteNote}
                           isArchived
                         >
                           {note.body}
                         </Card>
                       )
                     }
-                    if ((++index == notes.length) && (isArchivedNoteEmpty == true)) {
+                    if ((++index == notesData.notes.length) && (isArchivedNoteEmpty == true)) {
                       return (
                         <div key={index}>
                           Masih kosong nih... 💤
@@ -120,11 +124,4 @@ export default function Main({notes, changeArchived, deleteNote,submitNewNote}) 
       </main>
     </div>
   )
-}
-
-Main.propTypes = {
-  notes: PropsTypes.array.isRequired,
-  changeArchived: PropsTypes.func.isRequired,
-  deleteNote: PropsTypes.func.isRequired,
-  submitNewNote: PropsTypes.func.isRequired,
 }
