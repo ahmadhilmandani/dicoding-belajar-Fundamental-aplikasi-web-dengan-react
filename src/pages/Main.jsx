@@ -3,7 +3,6 @@ import { useState, useContext } from 'react'
 import TextButton from '../components/TextButton'
 import Card from '../components/Card'
 import moment from "moment"
-import PropsTypes from 'prop-types'
 import { userDataContext } from '../context/userData'
 import { notesDataContext } from '../context/notesData'
 
@@ -20,8 +19,8 @@ export default function Main() {
     <div className="relative">
       <main className='mt-12'>
         <section className='max-w-md mx-auto'>
-          <small className='mb-2 font-medium'>Hello, {userData.userName}! 👋😲</small>
-          <h1 className='mb-6'>Buat Catatan</h1>
+          <small className='block mb-2 font-medium'>Hello, {userData.userName}! 👋😲</small>
+          <h1 className='mb-8'>Buat Catatan</h1>
           <label className='mb-2 text-xs flex justify-between'>
             <div>
               <sup className='text-red-500 text-base'>*</sup>Judul harus diisi
@@ -125,11 +124,4 @@ export default function Main() {
       </main>
     </div>
   )
-}
-
-Main.propTypes = {
-  notes: PropsTypes.array.isRequired,
-  changeArchived: PropsTypes.func.isRequired,
-  deleteNote: PropsTypes.func.isRequired,
-  submitNewNote: PropsTypes.func.isRequired,
 }

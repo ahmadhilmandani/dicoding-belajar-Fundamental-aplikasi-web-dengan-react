@@ -17,7 +17,7 @@ const router = createBrowserRouter(
     localStorage.getItem("token") ?
       <Route path='/' element={<MainLayout />}>
         <>
-          <Route index element={<Main isIndex />} />
+          <Route index element={<Main />} />
           <Route path='/detail/:id' element={<Detail />} />
           <Route path='*' element={<NotFound />} />
         </>

@@ -1,7 +1,6 @@
 import moment from 'moment'
 import { useEffect, useState, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import PropsTypes from 'prop-types'
 import CustLink from '../components/CustLink'
 import IconButton from '../components/IconButton'
 import { notesDataContext } from '../context/notesData'
@@ -86,10 +85,4 @@ export default function Detail() {
       }
     </div>
   )
-}
-
-Detail.propTypes = {
-  notes: PropsTypes.array.isRequired,
-  changeArchived: PropsTypes.func,
-  deleteNote: PropsTypes.func,
 }

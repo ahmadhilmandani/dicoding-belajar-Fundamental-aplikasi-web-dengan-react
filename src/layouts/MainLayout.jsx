@@ -98,9 +98,17 @@ export default function Index() {
   return (
     <userDataContext.Provider value={{ userName, userEmail, userToken }} >
       <notesDataContext.Provider value={{ notes, changeArchived, deleteNote, submitNewNote }} >
-        <div className="w-full min-h-screen p-6 bg-cust-white">
+        <div className="w-full min-h-screen p-6 bg-cust-white relative">
           <Navigation />
           <Outlet />
+          <button
+            onClick={() => {
+              localStorage.clear()
+              window.location.replace("/")
+            }}
+            className="flex justify-center items-center text-xs rounded-md px-10 py-2 border border-rose-500 fixed bottom-5 right-5 z-50 text-rose-500 font-semibold hover:bg-rose-500 hover:text-cust-white transition-all">
+            Logout ➡️
+          </button>
         </div>
       </notesDataContext.Provider>
     </userDataContext.Provider>
