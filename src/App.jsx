@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -10,6 +11,10 @@ import Detail from './pages/Detail'
 import { useState } from 'react'
 import PropsTypes from 'prop-types'
 import NotFound from './pages/NotFound'
+import AuthLayout from './layouts/AuthLayout'
+import Login from './pages/Login'
+import Register from './pages/Register'
+// import { ThemeContext } from './context/testing'
 
 function TestingElement({ isIndex }) {
   const [notes, setNote] = useState(
@@ -58,6 +63,10 @@ function TestingElement({ isIndex }) {
       },
     ]
   )
+
+  const [userName] = useState(localStorage.getItem("name"))
+  const [userEmail] = useState(localStorage.getItem("email"))
+  const [userToken] = useState(localStorage.getItem("token"))
 
   function changeArchived(paramsId) {
     const newNotes = notes.map(note => {
@@ -108,13 +117,25 @@ function TestingElement({ isIndex }) {
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<MainLayout />}>
-      <Route index element={<TestingElement isIndex />} />
-      <Route path='/detail/:id' element={<TestingElement />} />
-      <Route path='*' element={<NotFound />}/>
-    </Route>
+    localStorage.getItem("token") ?
+      <Route path='/' element={<MainLayout />}>
+        <>
+          <Route index element={<TestingElement isIndex />} />
+          <Route path='/detail/:id' element={<TestingElement />} />
+          <Route path='*' element={<NotFound />} />
+        </>
+      </Route>
+      :
+      <Route path='/' element={<AuthLayout />}>
+        <>
+          <Route index element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='*' element={<NotFound />} />
+        </>
+      </Route>
   )
 )
+
 
 
 function App() {
