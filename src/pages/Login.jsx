@@ -1,7 +1,6 @@
 import TextButton from "../components/TextButton"
 import { useState } from "react"
 import axios from "axios"
-// import { redirect, useHistory  } from "react-router-dom"
 
 export default function Login() {
   const [email, setEmail] = useState('')
