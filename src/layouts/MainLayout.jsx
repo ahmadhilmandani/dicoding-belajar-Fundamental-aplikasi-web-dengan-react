@@ -1,116 +1,121 @@
 import { Outlet } from "react-router-dom"
 import Navigation from "../components/Navigation"
 import { userDataContext } from "../context/userData"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { notesDataContext } from "../context/notesData"
+import axios from "axios"
 
 export default function Index() {
-  const [notes, setNote] = useState(
-    [
-      {
-        id: 1,
-        title: "Babel",
-        body: "Babel merupakan tools open-source yang digunakan untuk mengubah sintaks ECMAScript 2015+ menjadi sintaks yang didukung oleh JavaScript engine versi lama. Babel sering dipakai ketika kita menggunakan sintaks terbaru termasuk sintaks JSX.",
-        createdAt: '2022-04-14T04:27:34.572Z',
-        archived: true,
-      },
-      {
-        id: 2,
-        title: "Functional Component",
-        body: "Functional component merupakan React component yang dibuat menggunakan fungsi JavaScript. Agar fungsi JavaScript dapat disebut component ia harus mengembalikan React element dan dipanggil layaknya React component.",
-        createdAt: '2022-04-14T04:27:34.572Z',
-        archived: true,
-      },
-      {
-        id: 3,
-        title: "Modularization",
-        body: "Dalam konteks pemrograman JavaScript, modularization merupakan teknik dalam memecah atau menggunakan kode dalam berkas JavaScript secara terpisah berdasarkan tanggung jawabnya masing-masing.",
-        createdAt: '2022-04-14T04:27:34.572Z',
-        archived: true,
-      },
-      {
-        id: 4,
-        title: "Lifecycle",
-        body: "Dalam konteks React component, lifecycle merupakan kumpulan method yang menjadi siklus hidup mulai dari component dibuat (constructor), dicetak (render), pasca-cetak (componentDidMount), dan sebagainya. ",
-        createdAt: '2022-04-14T04:27:34.572Z',
-        archived: true,
-      },
-      {
-        id: 5,
-        title: "ESM",
-        body: "ESM (ECMAScript Module) merupakan format modularisasi standar JavaScript.",
-        createdAt: '2022-04-14T04:27:34.572Z',
-        archived: false,
-      },
-      {
-        id: 6,
-        title: "Module Bundler",
-        body: "Dalam konteks pemrograman JavaScript, module bundler merupakan tools yang digunakan untuk menggabungkan seluruh modul JavaScript yang digunakan oleh aplikasi menjadi satu berkas.",
-        createdAt: '2022-04-14T04:27:34.572Z',
-        archived: true,
-      },
-    ]
-  )
-
-  function changeArchived(paramsId) {
-    const newNotes = notes.map(note => {
-      if (note.id !== paramsId) {
-        return note;
-      } else {
-        return {
-          ...note,
-          archived: !note.archived,
-        };
-      }
-    });
-    setNote(newNotes)
-  }
-
-  function deleteNote(paramsId) {
-    setNote(
-      notes.filter(note => note.id !== paramsId)
-    );
-  }
-
-  function submitNewNote(title, body) {
-    if (!title) {
-      return
-    }
-    setNote(
-      [
-        ...notes,
-        {
-          id: ++notes.length,
-          title: title,
-          body: body,
-          archived: false,
-          createdAt: new Date()
-        }
-      ]
-    )
-  }
-
-
   const [userName] = useState(localStorage.getItem("name"))
   const [userEmail] = useState(localStorage.getItem("email"))
   const [userToken] = useState(localStorage.getItem("token"))
+  const [isLoading, setIsloading] = useState(true)
+  const [archivedNotes, setArchivedNotes] = useState([])
+  const [notArchivedNotes, setNotArchivedNotes] = useState([])
 
-  return (
-    <userDataContext.Provider value={{ userName, userEmail, userToken }} >
-      <notesDataContext.Provider value={{ notes, changeArchived, deleteNote, submitNewNote }} >
-        <div className="w-full min-h-screen p-6 bg-cust-white relative">
-          <Navigation />
-          <Outlet />
-          <button
-            onClick={() => {
-              localStorage.clear()
-              window.location.replace("/")
-            }}
-            className="flex justify-center items-center text-xs rounded-md px-10 py-2 border border-rose-500 fixed bottom-5 right-5 z-50 text-rose-500 font-semibold hover:bg-rose-500 hover:text-cust-white transition-all">
-            Logout ➡️
-          </button>
-        </div>
-      </notesDataContext.Provider>
-    </userDataContext.Provider>
-  )
+
+  function changeArchived(paramsId, changeTo) {
+    axios.post(`https://notes-api.dicoding.dev/v1/notes/${paramsId}/${changeTo}`, null, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    }).then(() => {
+      axios.get("https://notes-api.dicoding.dev/v1/notes", {
+        headers: {
+          Authorization: `Bearer ${userToken}`
+        }
+      }).then((res) => {
+        setNotArchivedNotes(res.data.data)
+        axios.get("https://notes-api.dicoding.dev/v1/notes/archived", {
+          headers: {
+            Authorization: `Bearer ${userToken}`
+          }
+        }).then((res) => {
+          setArchivedNotes(res.data.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+      }).catch((err) => {
+        console.log(err)
+      })
+    }).catch((err) => {
+      console.log(err)
+    }).finally(() => {
+      setIsloading(false)
+    })
+  }
+
+  function deleteNote(paramsId) {
+    axios.delete(`https://notes-api.dicoding.dev/v1/notes/${paramsId}`,{
+      headers: {
+        Authorization: `Bearer ${userToken}`
+      }
+    }).then(() => {
+      window.location.replace("/")
+    }).catch(() => {
+      
+    }).finally(() => {
+      
+    })
+  }
+
+  function submitNewNote(title, body) {
+    if (!title && !body) {
+      return
+    }
+    axios.post(`https://notes-api.dicoding.dev/v1/notes`, {
+      title: title,
+      body: body,
+    }, {
+      headers: {
+        Authorization: `Bearer ${userToken}`
+      }
+    }).then(() => {
+      window.location.replace("/")
+    }).catch((err) => {
+      console.log(err)
+    }).finally(() => {
+    })
+  }
+
+
+  useEffect(() => {
+    axios.get("https://notes-api.dicoding.dev/v1/notes", {
+      headers: {
+        Authorization: `Bearer ${userToken}`
+      }
+    }).then((res) => {
+      setNotArchivedNotes(res.data.data)
+      axios.get("https://notes-api.dicoding.dev/v1/notes/archived", {
+        headers: {
+          Authorization: `Bearer ${userToken}`
+        }
+      }).then((res) => {
+        setArchivedNotes(res.data.data)
+      }).catch((err) => {
+        console.log(err)
+      })
+    }).catch((err) => {
+      console.log(err)
+    }).finally(() => {
+      setIsloading(false)
+    })
+  }, [])
+
+
+  if (isLoading == false) {
+    return (
+      <userDataContext.Provider value={{ userName, userEmail, userToken }} >
+        <notesDataContext.Provider value={{ archivedNotes, notArchivedNotes, changeArchived, deleteNote, submitNewNote }} >
+          <div className="w-full min-h-screen p-6 bg-cust-white relative">
+            <Navigation />
+            <Outlet />
+          </div>
+        </notesDataContext.Provider>
+      </userDataContext.Provider>
+    )
+  }
+  else {
+    <></>
+  }
 }

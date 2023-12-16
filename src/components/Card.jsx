@@ -43,34 +43,34 @@ export default function Card({ children, noteId, title, isArchived, createdAt, d
         <div className="flex gap-3 mt-3 items-center h-12">
           <IconButton onClick={() => { deleteNote(noteId) }}>
             <>
-            <button>
-              🗑️
-            </button>
-            <div>
-              Hapus
-              </div>
-              </>
-          </IconButton>
-          {isArchived ?
-            <IconButton onClick={() => { changeArchived(noteId) }}>
-              <>
               <button>
-                🚀
+                🗑️
               </button>
               <div>
-                Pindahkan
+                Hapus
               </div>
+            </>
+          </IconButton>
+          {isArchived ?
+            <IconButton onClick={() => { changeArchived(noteId, "unarchive") }}>
+              <>
+                <button>
+                  🚀
+                </button>
+                <div>
+                  Pindahkan
+                </div>
               </>
             </IconButton>
             :
-            <IconButton onClick={() => { changeArchived(noteId) }}>
+            <IconButton onClick={() => { changeArchived(noteId, "archive") }}>
               <>
-              <button>
-                📂
-              </button>
-              <div>
-                Arsipkan
-              </div>
+                <button>
+                  📂
+                </button>
+                <div>
+                  Arsipkan
+                </div>
               </>
             </IconButton>
           }
@@ -82,7 +82,7 @@ export default function Card({ children, noteId, title, isArchived, createdAt, d
 
 Card.propTypes = {
   children: PropsTypes.string,
-  noteId: PropsTypes.number,
+  noteId: PropsTypes.string,
   title: PropsTypes.string,
   isArchived: PropsTypes.bool,
   createdAt: PropsTypes.string,

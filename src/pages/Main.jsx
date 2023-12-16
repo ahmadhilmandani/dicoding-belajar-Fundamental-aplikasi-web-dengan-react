@@ -53,8 +53,8 @@ export default function Main() {
             <h1 className='mb-4'>Catatan aktif</h1>
             <div className='flex gap-4 flex-wrap'>
               {
-                notesData.notes.length > 0 ?
-                  notesData.notes.map((note, index) => {
+                notesData.notArchivedNotes.length > 0 ?
+                  notesData.notArchivedNotes.map((note, index) => {
                     if (note.archived != true) {
                       isActiveNoteEmpty = false
                       return (
@@ -70,7 +70,7 @@ export default function Main() {
                         </Card>
                       )
                     }
-                    if ((++index == notesData.notes.length) && (isActiveNoteEmpty == true)) {
+                    if ((++index == notesData.notArchivedNotes.length) && (isActiveNoteEmpty == true)) {
                       return (
                         <div key={index}>
                           Masih kosong nih... 💤
@@ -88,8 +88,8 @@ export default function Main() {
             <h1 className='mb-4'>Arsip</h1>
             <div className='flex gap-4 flex-wrap'>
               {
-                notesData.notes.length > 0 ?
-                  notesData.notes.map((note, index) => {
+                notesData.archivedNotes.length > 0 ?
+                  notesData.archivedNotes.map((note, index) => {
                     if (note.archived != false) {
                       isArchivedNoteEmpty = false
                       return (
@@ -106,7 +106,7 @@ export default function Main() {
                         </Card>
                       )
                     }
-                    if ((++index == notesData.notes.length) && (isArchivedNoteEmpty == true)) {
+                    if ((++index == notesData.archivedNotes.length) && (isArchivedNoteEmpty == true)) {
                       return (
                         <div key={index}>
                           Masih kosong nih... 💤
