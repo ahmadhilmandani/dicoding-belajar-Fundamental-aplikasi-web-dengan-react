@@ -3,6 +3,7 @@ import Navigation from "../components/Navigation"
 import { userDataContext } from "../context/userData"
 import { useState, useEffect } from "react"
 import { notesDataContext } from "../context/notesData"
+import { ThemeDataContext } from "../context/themeData"
 import axios from "axios"
 
 export default function Index() {
@@ -12,6 +13,7 @@ export default function Index() {
   const [isLoading, setIsloading] = useState(true)
   const [archivedNotes, setArchivedNotes] = useState([])
   const [notArchivedNotes, setNotArchivedNotes] = useState([])
+  const [themeData, setThemeData] = useState('light')
 
 
   function changeArchived(paramsId, changeTo) {
@@ -107,10 +109,22 @@ export default function Index() {
     return (
       <userDataContext.Provider value={{ userName, userEmail, userToken }} >
         <notesDataContext.Provider value={{ archivedNotes, notArchivedNotes, changeArchived, deleteNote, submitNewNote }} >
-          <div className="w-full min-h-screen py-6 px-16 bg-cust-white relative">
-            <Navigation />
-            <Outlet />
-          </div>
+          <ThemeDataContext.Provider value={themeData} >
+            <div className={`w-full min-h-screen py-6 px-16 ${themeData == 'light' ? "bg-cust-white" : "bg-cust-black"} relative`}>
+              <Navigation />
+              <Outlet />
+              <div className="fixed z-50 right-2 top-[50vh] text-xl cursor-pointer">
+                <div className={`${themeData == 'light' ? "bg-neutral-300/90" : "bg-cust-white"} border border-neutral-500/50 border-b-0 rounded-t-full p-1`}
+                  onClick={() => { setThemeData("light") }}>
+                  {themeData == 'light' ? "☀️" : "⛅"}
+                </div>
+                <div className={`${themeData == 'dark' ? "bg-neutral-300/90" : "bg-cust-white"} border border-neutral-500/50 rounded-b-full p-1`}
+                  onClick={() => { setThemeData("dark") }}>
+                  {themeData == 'dark' ? "🌕" : "🌙"}
+                </div>
+              </div>
+            </div>
+          </ThemeDataContext.Provider>
         </notesDataContext.Provider>
       </userDataContext.Provider>
     )
