@@ -6,6 +6,7 @@ import IconButton from '../components/IconButton'
 import axios from 'axios'
 import { userDataContext } from '../context/userData'
 import { notesDataContext } from '../context/notesData'
+import { ThemeDataContext } from '../context/themeData'
 
 export default function Detail() {
   const params = useParams()
@@ -13,6 +14,7 @@ export default function Detail() {
   const userData = useContext(userDataContext)
   const [singleNote, setSingleNote] = useState(null)
   const { changeArchived, deleteNote } = useContext(notesDataContext)
+  const themeData = useContext(ThemeDataContext)
 
   useEffect(() => {
     axios.get(`https://notes-api.dicoding.dev/v1/notes/${params.id}`, {
@@ -35,14 +37,18 @@ export default function Detail() {
       </div>
       {singleNote !== null &&
         <>
-          <div className='mt-4 bg-cust-gray px-5 py-10 rounded-md'>
-            <h1>
+          <div className={`mt-4 px-5 py-10 rounded-md ${themeData == "dark"
+            ? "text-cust-white bg-neutral-800/40" : "bg-cust-light-gray"}`}>
+            <h1 className={`${themeData == "dark"
+              ? "text-cust-white" : ""}`}>
               {singleNote.title}
             </h1>
-            <p className="my-2 block text-gray-500/70 text-sm">
+            <p className={`my-2 block text-sm ${themeData == "dark"
+              ? "text-cust-white/40" : "text-gray-500/70"}`}>
               {moment(singleNote.createdAt).format("DD-MM-YYYY")}
             </p>
-            <div className="mt-8">
+            <div className={`mt-8 ${themeData == "dark"
+              ? "text-cust-white" : ""}`}>
               {singleNote.body}
             </div>
           </div>
@@ -55,7 +61,7 @@ export default function Detail() {
                 <button>
                   🗑️
                 </button>
-                <div>
+                <div className={`${themeData == "dark" ? "text-cust-white" : ""}`}>
                   Hapus
                 </div>
               </>
@@ -70,7 +76,7 @@ export default function Detail() {
                   <button>
                     🚀
                   </button>
-                  <div>
+                  <div className={`${themeData == "dark" ? "text-cust-white" : ""}`}>
                     Pindahkan
                   </div>
                 </>
@@ -84,7 +90,7 @@ export default function Detail() {
                   <button>
                     📂
                   </button>
-                  <div>
+                  <div className={`${themeData == "dark" ? "text-cust-white" : ""}`}>
                     Arsipkan
                   </div>
                 </>

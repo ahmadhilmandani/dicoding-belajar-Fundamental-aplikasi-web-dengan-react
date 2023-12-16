@@ -13,7 +13,7 @@ export default function Index() {
   const [isLoading, setIsloading] = useState(true)
   const [archivedNotes, setArchivedNotes] = useState([])
   const [notArchivedNotes, setNotArchivedNotes] = useState([])
-  const [themeData, setThemeData] = useState('light')
+  const [themeData, setThemeData] = useState(localStorage.getItem("theme"))
 
 
   function changeArchived(paramsId, changeTo) {
@@ -82,6 +82,10 @@ export default function Index() {
 
 
   useEffect(() => {
+    if (!themeData) {
+      localStorage.setItem("theme", "light")
+      setThemeData('light')
+    }
     axios.get("https://notes-api.dicoding.dev/v1/notes", {
       headers: {
         Authorization: `Bearer ${userToken}`
@@ -115,11 +119,17 @@ export default function Index() {
               <Outlet />
               <div className="fixed z-50 right-2 top-[50vh] text-xl cursor-pointer">
                 <div className={`${themeData == 'light' ? "bg-neutral-300/90" : "bg-cust-white"} border border-neutral-500/50 border-b-0 rounded-t-full p-1`}
-                  onClick={() => { setThemeData("light") }}>
+                  onClick={() => {
+                    localStorage.setItem("theme", "light")
+                    setThemeData(localStorage.getItem("theme"))
+                  }}>
                   {themeData == 'light' ? "☀️" : "⛅"}
                 </div>
                 <div className={`${themeData == 'dark' ? "bg-neutral-300/90" : "bg-cust-white"} border border-neutral-500/50 rounded-b-full p-1`}
-                  onClick={() => { setThemeData("dark") }}>
+                  onClick={() => {
+                    localStorage.setItem("theme", "dark")
+                    setThemeData(localStorage.getItem("theme"))
+                  }}>
                   {themeData == 'dark' ? "🌕" : "🌙"}
                 </div>
               </div>

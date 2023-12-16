@@ -34,12 +34,12 @@ export default function Main() {
             if (e.target.value.length <= 50) {
               setTitle(e.target.value)
             }
-          }} value={title} type="text" className={`outline-0 rounded-lg px-4 py-2 text-sm w-full border focus:outline-1 outline-cust-blue focus:border-cust-blue ${themeData == "dark" ? "text-cust-white bg-neutral-800/40 border-neutral-600" : "bg-cust-light-gray border-neutral-600"}`} placeholder="Judul catatan... ✨" />
+          }} value={title} type="text" className={`outline-0 rounded-lg px-4 py-2 text-sm w-full border focus:outline-1 outline-cust-blue focus:border-cust-blue ${themeData == "dark" ? "text-cust-white bg-neutral-800/40 border-neutral-600" : "bg-cust-light-gray border-cust-gray"}`} placeholder="Judul catatan... ✨" />
 
           <textarea onChange={(e) => {
             setBody(e.target.value)
           }} name="" id="" cols="30" rows="10" value={body} className={`outline-0 rounded-lg px-4 py-2 text-sm w-full border focus:outline-1 outline-cust-blue focus:border-cust-blue mt-4 mb-4 
-          ${themeData == "dark" ? "text-cust-white bg-neutral-800/40 border-neutral-600" : "bg-cust-light-gray border-neutral-600"}
+          ${themeData == "dark" ? "text-cust-white bg-neutral-800/40 border-neutral-600" : "bg-cust-light-gray border-cust-gray"}
           `} placeholder='tulis deksripsi catatan... 📝'>
           </textarea>
 

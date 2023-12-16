@@ -1,7 +1,7 @@
-import CustLink from "./CustLink";
-import IconButton from "./IconButton";
+import CustLink from "./CustLink"
+import IconButton from "./IconButton"
 import PropsTypes from 'prop-types'
-import { useState } from "react";
+import { useState } from "react"
 
 export default function Card({ children, noteId, title, isArchived, createdAt, deleteNote, changeArchived }) {
   const [color, setColor] = useState('#D1EAED')
