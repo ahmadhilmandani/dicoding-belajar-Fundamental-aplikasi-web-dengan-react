@@ -1,13 +1,14 @@
 import TextButton from "../components/TextButton"
-import { useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { useInput } from "../hooks/useInput"
+import CustLink from "../components/CustLink"
 
 export default function Register() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPass, setConfirmPass] = useState('')
+  const [name, handleNameChange] = useInput('')
+  const [email, handleEmailChange] = useInput('')
+  const [password, handlePasswordChange] = useInput('')
+  const [confirmPass, handleConfirmPassChange] = useInput('')
   const navigate = useNavigate()
 
   function handleRegister() {
@@ -35,31 +36,19 @@ export default function Register() {
           <label htmlFor="name" className="text-sm">
             👋 Namaku adalah...
           </label>
-          <input id="name" onChange={(e) => {
-            if (e.target.value.length <= 50) {
-              setName(e.target.value)
-            }
-          }} value={name} type="text" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm  border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder="Ahmad Hilman Dani" />
+          <input id="name" onChange={handleNameChange} value={name} type="text" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm  border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder="Ahmad Hilman Dani" />
         </div>
         <div className="flex flex-col gap-3 my-8">
           <label htmlFor="name" className="text-sm">
             📧 Emailku...
           </label>
-          <input onChange={(e) => {
-            if (e.target.value.length <= 50) {
-              setEmail(e.target.value)
-            }
-          }} id="name" value={email} type="text" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder="ahmadhilmandani@example.com" />
+          <input onChange={handleEmailChange} id="name" value={email} type="text" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder="ahmadhilmandani@example.com" />
         </div>
         <div className="flex flex-col gap-3 mb-8">
           <label htmlFor="password" className="text-sm">
             🤫Sssttt, passwordku adalah..
           </label>
-          <input id="password" onChange={(e) => {
-            if (e.target.value.length <= 50) {
-              setPassword(e.target.value)
-            }
-          }} value={password} type="password" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder=".........." />
+          <input id="password" onChange={handlePasswordChange} value={password} type="password" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder=".........." />
           {password !== confirmPass ?
             <div className="text-xs text-red-500">Password masih beda nih...</div>
             :
@@ -67,15 +56,15 @@ export default function Register() {
           <label htmlFor="password" className="text-sm mt-2">
             🔒Ku coba confirmasi password dulu, ya!
           </label>
-          <input onChange={(e) => {
-            if (e.target.value.length <= 50) {
-              setConfirmPass(e.target.value)
-            }
-          }} value={confirmPass} type="password" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm  border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder=".........." />
+          <input onChange={handleConfirmPassChange} value={confirmPass} type="password" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm  border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder=".........." />
         </div>
         <TextButton onClick={handleRegister} isPrimary>
-          Register
+        📝 Register 📝
         </TextButton>
+        <div className="mt-7">
+          <p className="text-center text-xs">Udah punya akun? Bagus dong! langsung klik!👇</p>
+        <CustLink href="/">Login 🚪</CustLink>
+        </div>
       </div>
     </main>
   )

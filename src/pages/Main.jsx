@@ -48,9 +48,9 @@ export default function Main() {
             Tambah 🫰
           </TextButton>
         </section>
-        <section className='mt-10'>
+        <section className='mt-14'>
           <div>
-            <h1 className='mb-4'>Catatan aktif</h1>
+            <h1 className='mb-6'>Catatan aktif</h1>
             <div className='flex gap-4 flex-wrap'>
               {
                 notesData.notArchivedNotes.length > 0 ?
@@ -84,8 +84,8 @@ export default function Main() {
               }
             </div>
           </div>
-          <div className='mt-4'>
-            <h1 className='mb-4'>Arsip</h1>
+          <div className='mt-10'>
+            <h1 className='mb-6'>Arsip</h1>
             <div className='flex gap-4 flex-wrap'>
               {
                 notesData.archivedNotes.length > 0 ?

@@ -1,10 +1,12 @@
 import TextButton from "../components/TextButton"
-import { useState } from "react"
 import axios from "axios"
+import { useInput } from "../hooks/useInput"
+import { useState } from "react"
+import CustLink from "../components/CustLink"
 
 export default function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, handleEmailChange] = useInput('')
+  const [password, handlePasswordChange] = useInput('')
   const [isLoading, setIsLoading] = useState(false)
 
   function handleLogin() {
@@ -43,25 +45,21 @@ export default function Login() {
           <label htmlFor="name" className="text-sm">
             📧 Emailku...
           </label>
-          <input onChange={(e) => {
-            if (e.target.value.length <= 50) {
-              setEmail(e.target.value)
-            }
-          }} id="name" value={email} type="text" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder="ahmadhilmandani@example.com" />
+          <input onChange={handleEmailChange} id="name" value={email} type="text" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder="ahmadhilmandani@example.com" />
         </div>
         <div className="flex flex-col gap-3 mb-8">
           <label htmlFor="password" className="text-sm">
             🤫Sssttt, passwordku adalah..
           </label>
-          <input id="password" onChange={(e) => {
-            if (e.target.value.length <= 50) {
-              setPassword(e.target.value)
-            }
-          }} value={password} type="password" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder=".........." />
+          <input id="password" onChange={handlePasswordChange} value={password} type="password" className="block w-full outline-0 bg-cust-light-gray rounded-lg px-4 py-2 text-sm border focus:outline-1 outline-cust-blue focus:border-cust-blue" placeholder=".........." />
         </div>
         <TextButton isDisabled={isLoading} onClick={handleLogin} isPrimary>
-          Register
+        🚪 Login 🚪
         </TextButton>
+        <div className="mt-7">
+          <p className="text-center text-xs">Belum punya akun? tenang! check this out👇</p>
+        <CustLink href="/register">Register 📝</CustLink>
+        </div>
       </div>
     </main>
   )

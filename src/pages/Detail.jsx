@@ -46,7 +46,7 @@ export default function Detail() {
               {singleNote.body}
             </div>
           </div>
-          <div className='flex gap-2 justify-end items-center fixed bottom-8 right-8'>
+          <div className='flex gap-2 justify-end items-center fixed bottom-10 right-20'>
             <IconButton onClick={() => {
               deleteNote(singleNote.id)
               navigate("/")

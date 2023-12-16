@@ -46,16 +46,16 @@ export default function Index() {
   }
 
   function deleteNote(paramsId) {
-    axios.delete(`https://notes-api.dicoding.dev/v1/notes/${paramsId}`,{
+    axios.delete(`https://notes-api.dicoding.dev/v1/notes/${paramsId}`, {
       headers: {
         Authorization: `Bearer ${userToken}`
       }
     }).then(() => {
       window.location.replace("/")
     }).catch(() => {
-      
+
     }).finally(() => {
-      
+
     })
   }
 
@@ -107,7 +107,7 @@ export default function Index() {
     return (
       <userDataContext.Provider value={{ userName, userEmail, userToken }} >
         <notesDataContext.Provider value={{ archivedNotes, notArchivedNotes, changeArchived, deleteNote, submitNewNote }} >
-          <div className="w-full min-h-screen p-6 bg-cust-white relative">
+          <div className="w-full min-h-screen py-6 px-16 bg-cust-white relative">
             <Navigation />
             <Outlet />
           </div>
